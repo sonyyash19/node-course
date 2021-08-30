@@ -1,6 +1,9 @@
 const path = require('path');
 const express = require('express');
 const hbs = require('hbs');
+const forecast = require('./utils/forecast');
+const geocode = require('./utils/geocode');
+const request = require('request');
 
 const app = express();
 
@@ -40,10 +43,51 @@ app.get('/help', (req, res) => {
 })
 
 app.get('/weather', (req, res) => {
+    if(!req.query.address){
+        return res.send({
+            error: "You must provide an address"
+        })
+    }
+       
+    geocode(req.query.address, (error, {latitude, longitude, location}) => {
+        if(error){
+            return res.send({
+                error: error
+            })
+        }
+
+        forecast(latitude, longitude, (error, forecastData) => {
+            if(error){
+                return res.send({
+                    error: error
+                })
+            }
+
+            res.send({
+                address: req.query.address,
+                forecast: forecastData,
+                location
+            })
+        })
+    })
+
+    // res.send({
+    //     address: req.query.address,
+    //     forecast: "50 degress",
+    //     location: "Philadelphia"
+    // });
+})
+
+app.get('/products', (req, res) => {
+    if(!req.query.search){
+       return  res.send({
+            error: "404 error not found"
+        })
+    }
+    console.log(req.query.search);
     res.send({
-        forecast: "50 degress",
-        location: "Philadelphia"
-    });
+        products: []
+    })
 })
 
 app.get('/help/*', (req, res) => {
@@ -63,5 +107,5 @@ app.get('*', (req, res) => {
 })
 
 app.listen(3000, () => {
-    console.log('The server has started!');
+    console.log('The server has started at port 3000!');
 })
