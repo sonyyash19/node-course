@@ -38,6 +38,32 @@ header a{
     text-decoration: none;
 }
 
+header div{
+    border: 1px solid black;
+    padding: 3px;
+}
+
 .portrait{
     width: 250px;
 }
+
+#description{
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 20px;
+}
+
+
+input{
+    border: 1px solid #cccccc;
+    padding: 8px;
+    margin-top: 30px;
+}
+
+button{
+    border: 1px solid #888888;
+    cursor: pointer;
+    background: #888888;
+    color: white;
+    padding: 8px;
+}
+
